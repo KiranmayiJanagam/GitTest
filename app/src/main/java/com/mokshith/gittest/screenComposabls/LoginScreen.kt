@@ -11,6 +11,10 @@ import androidx.compose.material.icons.rounded.Lock
 import androidx.compose.material.icons.rounded.Person
 import androidx.compose.material3.Surface
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
@@ -31,6 +35,8 @@ import com.mokshith.gittest.composableComponents.UnderLineTextComponents
 @Composable
 fun LoginScreen(navController: NavController) {
 
+    var email by remember { mutableStateOf("") }
+    var password by remember { mutableStateOf("") }
     Surface(
         color = Color.White, modifier = Modifier.fillMaxSize()
     ) {
@@ -42,14 +48,15 @@ fun LoginScreen(navController: NavController) {
             NormalTextComponents(value = stringResource(id = R.string.hello))
             BoldTextComponents(value = "Welcome Back")
             Spacer(modifier = Modifier.heightIn(24.dp))
-            SimpleOutlinedTextFieldSample(
-                value = "First Name",
+            SimpleOutlinedTextFieldSample(value = "First Name",
                 KeyboardOptions(keyboardType = KeyboardType.Text),
-                Icons.Rounded.Person
-            )
-            SimpleOutlinedTextFieldSamplePassword(
-                value = "Password", imageIcon = Icons.Rounded.Lock
-            )
+                Icons.Rounded.Person,
+                email,
+                onValueChange = { email = it })
+            SimpleOutlinedTextFieldSamplePassword(value = "Password",
+                imageIcon = Icons.Rounded.Lock,
+                password,
+                onValueChange = { password = it })
 
             Spacer(modifier = Modifier.heightIn(20.dp))
 
@@ -59,7 +66,9 @@ fun LoginScreen(navController: NavController) {
 
             Spacer(modifier = Modifier.heightIn(40.dp))
 
-            ButtonComponent(value = "Login")
+            ButtonComponent(value = "Login", onItemClick = {
+                
+            })
 
             ClickableTextComponentSingUpLogin(navController = navController,
                 initialText = "Don't have the account yet? ",

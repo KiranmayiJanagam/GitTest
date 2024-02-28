@@ -1,5 +1,6 @@
 package com.mokshith.gittest.navigation
 
+import android.content.Context
 import androidx.compose.runtime.Composable
 import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
@@ -12,7 +13,7 @@ import com.mokshith.gittest.screenComposabls.SignUpScreen
 import com.mokshith.gittest.screenComposabls.TermsAndConditionScreen
 
 @Composable
-fun Navigation() {
+fun Navigation(context: Context) {
     val navController = rememberNavController()
     NavHost(
         navController = navController,

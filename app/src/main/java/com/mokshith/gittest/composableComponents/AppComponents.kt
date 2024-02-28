@@ -12,6 +12,7 @@ import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.ClickableText
+import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
@@ -36,12 +37,14 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.text.SpanStyle
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.buildAnnotatedString
 import androidx.compose.ui.text.font.FontStyle
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.text.input.VisualTransformation
@@ -92,10 +95,11 @@ fun BoldTextComponents(value: String) {
 fun SimpleOutlinedTextFieldSample(
     value: String,
     keyboardOptions: KeyboardOptions,
-    imageIcon: ImageVector
+    imageIcon: ImageVector,
+    text: String,
+    onValueChange: (String) -> Unit
 ) {
-    var text by remember { mutableStateOf("") }
-
+    // val text by remember { mutableStateOf("") }
     OutlinedTextField(
         modifier = Modifier.fillMaxWidth(),
         colors = TextFieldDefaults.colors(
@@ -109,9 +113,10 @@ fun SimpleOutlinedTextFieldSample(
             disabledContainerColor = colorResource(id = R.color.colorGray),
         ),
         value = text,
-        onValueChange = { text = it },
+        onValueChange = onValueChange,
         label = { Text(value) },
         maxLines = 1,
+        singleLine = true,
         keyboardOptions = keyboardOptions,
         leadingIcon = {
             Icon(imageIcon, contentDescription = "Localized description")
@@ -122,10 +127,12 @@ fun SimpleOutlinedTextFieldSample(
 @Composable
 fun SimpleOutlinedTextFieldSamplePassword(
     value: String,
-    imageIcon: ImageVector
+    imageIcon: ImageVector,
+    password: String,
+    onValueChange: (String) -> Unit
 ) {
     var passwordVisible by remember { mutableStateOf(false) }
-    var password by remember { mutableStateOf("") }
+    val focusManager = LocalFocusManager.current
 
     OutlinedTextField(
         modifier = Modifier.fillMaxWidth(),
@@ -140,10 +147,17 @@ fun SimpleOutlinedTextFieldSamplePassword(
             disabledContainerColor = colorResource(id = R.color.colorGray),
         ),
         value = password,
-        onValueChange = { password = it },
+        onValueChange = onValueChange,
         label = { Text(value) },
         maxLines = 1,
-        keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Password),
+        singleLine = true,
+        keyboardOptions = KeyboardOptions(
+            keyboardType = KeyboardType.Password,
+            imeAction = ImeAction.Done
+        ),
+        keyboardActions = KeyboardActions {
+            focusManager.clearFocus()
+        },
         leadingIcon = {
             Icon(imageIcon, contentDescription = "Localized description")
         },
@@ -229,9 +243,11 @@ fun ClickableTextComponent(navController: NavController, onItemClick: (String) -
 
 
 @Composable
-fun ButtonComponent(value: String) {
+fun ButtonComponent(value: String, onItemClick: () -> Unit) {
     Button(
-        onClick = {},
+        onClick = {
+            onItemClick()
+        },
         modifier = Modifier
             .fillMaxWidth()
             .heightIn(48.dp),
@@ -269,7 +285,6 @@ fun ClickableTextComponentSingUpLogin(
     finalText: String,
     onItemClick: (String) -> Unit
 ) {
-
     Row(
         modifier = Modifier
             .fillMaxWidth()
@@ -310,7 +325,6 @@ fun DividerComponent() {
                 .fillMaxWidth()
                 .weight(1f), color = colorResource(id = R.color.colorGray), thickness = 1.dp
         )
-
         Text(
             text = "or", modifier = Modifier.padding(
                 10.dp
@@ -322,7 +336,6 @@ fun DividerComponent() {
                 .fillMaxWidth()
                 .weight(1f), color = colorResource(id = R.color.colorGray), thickness = 1.dp
         )
-
     }
 }
 

@@ -1,5 +1,7 @@
 package com.mokshith.gittest.screenComposabls
 
+import android.content.Context
+import android.widget.Toast
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
@@ -12,9 +14,14 @@ import androidx.compose.material.icons.rounded.Lock
 import androidx.compose.material.icons.rounded.Person
 import androidx.compose.material3.Surface
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -32,7 +39,11 @@ import com.mokshith.gittest.composableComponents.SimpleOutlinedTextFieldSamplePa
 import com.mokshith.gittest.navigation.Screen
 
 @Composable
-fun SignUpScreen(navController : NavController) {
+fun SignUpScreen(navController: NavController) {
+    var firstName by remember { mutableStateOf("") }
+    var lastName by remember { mutableStateOf("") }
+    var email by remember { mutableStateOf("") }
+    var password by remember { mutableStateOf("") }
     Surface(
         color = Color.White,
         modifier = Modifier
@@ -46,23 +57,31 @@ fun SignUpScreen(navController : NavController) {
             Spacer(modifier = Modifier.heightIn(24.dp))
             SimpleOutlinedTextFieldSample(
                 value = "First Name",
-                KeyboardOptions(keyboardType = KeyboardType.Text),
-                Icons.Rounded.Person
+                KeyboardOptions(keyboardType = KeyboardType.Text, imeAction = ImeAction.Next),
+                Icons.Rounded.Person,
+                firstName,
+                onValueChange = { firstName = it }
             )
             SimpleOutlinedTextFieldSample(
                 value = "Last Name",
                 KeyboardOptions(keyboardType = KeyboardType.Text),
-                Icons.Rounded.Person
+                Icons.Rounded.Person,
+                lastName,
+                onValueChange = { lastName = it }
             )
             SimpleOutlinedTextFieldSample(
                 value = "Email",
                 KeyboardOptions(keyboardType = KeyboardType.Email),
-                Icons.Rounded.Email
+                Icons.Rounded.Email,
+                email,
+                onValueChange = { email = it }
             )
             //password outlined text
             SimpleOutlinedTextFieldSamplePassword(
                 value = "Password",
-                imageIcon = Icons.Rounded.Lock
+                imageIcon = Icons.Rounded.Lock,
+                password,
+                onValueChange = { password = it }
             )
             CheckBoxComponent(navController = navController, onItemClick = {
                 navController.navigate(Screen.PrivacyPolicy.route)
@@ -70,7 +89,11 @@ fun SignUpScreen(navController : NavController) {
 
             Spacer(modifier = Modifier.heightIn(80.dp))
 
-            ButtonComponent(value = "Register")
+            ButtonComponent(value = "Register", onItemClick = {
+                if (firstName.isNotEmpty()){
+
+                }
+            })
 
             Spacer(modifier = Modifier.heightIn(20.dp))
 
@@ -81,7 +104,7 @@ fun SignUpScreen(navController : NavController) {
                 initialText = "Already have an account? ",
                 finalText = "Login",
                 onItemClick = {
-
+                    navController.navigate(Screen.LogIn.route)
                 }
             )
         }

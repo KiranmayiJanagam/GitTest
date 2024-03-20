@@ -31,6 +31,7 @@ import com.mokshith.gittest.composableComponents.NormalTextComponents
 import com.mokshith.gittest.composableComponents.SimpleOutlinedTextFieldSample
 import com.mokshith.gittest.composableComponents.SimpleOutlinedTextFieldSamplePassword
 import com.mokshith.gittest.composableComponents.UnderLineTextComponents
+import com.mokshith.gittest.navigation.Screen
 
 @Composable
 fun LoginScreen(navController: NavController) {
@@ -67,7 +68,7 @@ fun LoginScreen(navController: NavController) {
             Spacer(modifier = Modifier.heightIn(40.dp))
 
             ButtonComponent(value = "Login", onItemClick = {
-                
+                navController.navigate(Screen.MainScreen.route)
             })
 
             ClickableTextComponentSingUpLogin(navController = navController,

@@ -1,8 +1,8 @@
 package com.mokshith.gittest.navigation
 
 sealed class Screen(val route : String) {
-    data object SignUp: Screen("sign_up_screen")
-    data object TermsOfUse: Screen("terms_of_use_screen")
+     object SignUp: Screen("sign_up_screen")
+     object TermsOfUse: Screen("terms_of_use_screen")
 
     //this is for only mamdatory arguments
     fun withArgs(vararg args :String): String{
@@ -14,7 +14,9 @@ sealed class Screen(val route : String) {
         }
     }
 
-    data object PrivacyPolicy: Screen("privacy_policy")
+     object PrivacyPolicy: Screen("privacy_policy")
 
-    data object LogIn: Screen("log_in")
+     object LogIn: Screen("log_in")
+
+     object MainScreen: Screen("main_screen")
 }

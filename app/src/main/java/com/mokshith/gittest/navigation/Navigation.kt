@@ -8,12 +8,13 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
 import com.mokshith.gittest.screenComposabls.LoginScreen
+import com.mokshith.gittest.screenComposabls.MainScreen
 import com.mokshith.gittest.screenComposabls.PrivacyPolicyScreen
 import com.mokshith.gittest.screenComposabls.SignUpScreen
 import com.mokshith.gittest.screenComposabls.TermsAndConditionScreen
 
 @Composable
-fun Navigation(context: Context) {
+fun Navigation() {
     val navController = rememberNavController()
     NavHost(
         navController = navController,
@@ -41,6 +42,9 @@ fun Navigation(context: Context) {
         }
         composable(route = Screen.LogIn.route) {
             LoginScreen(navController)
+        }
+        composable(route = Screen.MainScreen.route) {
+            MainScreen(navController)
         }
     }
 }

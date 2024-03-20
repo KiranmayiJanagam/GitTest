@@ -14,12 +14,16 @@ import androidx.compose.material.icons.rounded.Lock
 import androidx.compose.material.icons.rounded.Person
 import androidx.compose.material3.Surface
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.DisposableEffect
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.SideEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
@@ -37,6 +41,8 @@ import com.mokshith.gittest.composableComponents.NormalTextComponents
 import com.mokshith.gittest.composableComponents.SimpleOutlinedTextFieldSample
 import com.mokshith.gittest.composableComponents.SimpleOutlinedTextFieldSamplePassword
 import com.mokshith.gittest.navigation.Screen
+import kotlinx.coroutines.Delay
+import kotlinx.coroutines.delay
 
 @Composable
 fun SignUpScreen(navController: NavController) {
@@ -107,6 +113,34 @@ fun SignUpScreen(navController: NavController) {
                     navController.navigate(Screen.LogIn.route)
                 }
             )
+            
+            
+            Greetings()
+        }
+    }
+}
+
+@Composable
+fun Greetings() {
+
+    val context = LocalContext.current
+    val x by remember {
+        mutableStateOf(true)
+    }
+//    SideEffect {
+//
+//    }
+//
+    LaunchedEffect(key1 = Unit) {
+        delay(1000)
+        Toast.makeText(context,"Hello Mokshith",Toast.LENGTH_SHORT).show()
+    }
+
+
+    DisposableEffect(key1 = Unit) {
+        //delay(1000)
+        onDispose {
+
         }
     }
 }

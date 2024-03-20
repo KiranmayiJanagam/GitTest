@@ -1,7 +1,5 @@
 package com.mokshith.gittest.roomDB
 
-import androidx.room.PrimaryKey
-
 sealed interface SignUpEvents {
     data class SaveSignUpData(
         val firstName: String,

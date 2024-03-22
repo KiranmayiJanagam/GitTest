@@ -22,6 +22,10 @@ interface WebServices {
     @GET("categories.php")
     suspend fun getCategories(): Response<List<Category>>
 
+    @GET("categories.php")
+    suspend fun getCategories1(): Response<Categories>
+
+
     @GET("products")
     suspend fun getProducts1(): Response<ProductsModel>
 

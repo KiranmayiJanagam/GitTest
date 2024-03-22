@@ -1,12 +1,12 @@
 package com.mokshith.gittest.navigation
 
-import android.content.Context
 import androidx.compose.runtime.Composable
 import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
+import com.mokshith.gittest.screenComposabls.DetailsScreen
 import com.mokshith.gittest.screenComposabls.LoginScreen
 import com.mokshith.gittest.screenComposabls.MainScreen
 import com.mokshith.gittest.screenComposabls.PrivacyPolicyScreen
@@ -45,6 +45,20 @@ fun Navigation() {
         }
         composable(route = Screen.MainScreen.route) {
             MainScreen(navController)
+        }
+        composable(route = Screen.DetailsScreen.route +"/{description}/{url}",
+            arguments = listOf(
+                navArgument("description") {
+                    type = NavType.StringType
+                },
+                navArgument("url") {
+                    type = NavType.StringType
+                }
+            )
+        ) {
+            val description = it.arguments?.getString("description")
+            val url = it.arguments?.getString("url")
+            DetailsScreen(navController,description,url)
         }
     }
 }

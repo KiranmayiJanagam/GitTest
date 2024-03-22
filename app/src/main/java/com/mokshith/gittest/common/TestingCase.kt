@@ -23,23 +23,45 @@ import kotlin.coroutines.CoroutineContext
 import kotlin.coroutines.EmptyCoroutineContext
 import kotlin.time.measureTime
 
-suspend fun main() = coroutineScope {
+fun LRUCache(strArr: Array<String>): String {
+    val cache = LinkedHashMap<String, Unit>(5, 0.75f, true) // Access-order LinkedHashMap with max size 5
 
-    val flow = flow {
-        repeat(3) {
-            println("stated cooking pancake $it")
-            delay(100)
-            println("pancake is ready $it")
-            emit(it)
+    for (char in strArr) {
+        cache.putIfAbsent(char, Unit) // Insert if absent, otherwise move to front
+        if (cache.size > 5) {
+            cache.remove(cache.keys.first()) // Remove LRU element if cache is full
         }
-    }.buffer()
-
-    flow.collect {
-        println("collect: Start eating pancake $it")
-        delay(1000)
-        println("collect: finished eating pancake $it")
     }
+
+    // Construct the output string with hyphen-separated elements
+    return cache.keys.joinToString("-")
 }
+
+
+fun main() {
+    println(LRUCache(arrayOf("A", "B", "C", "D", "A", "E", "D", "Z"))) // Output: C-A-E-D-Z
+    println(LRUCache(arrayOf("A", "B", "A", "C", "A", "B"))) // Output: C-A-B
+    println(LRUCache(arrayOf("A", "B", "C", "D", "E", "D", "Q", "Z", "C"))) // Output: E-D-Q-Z-C
+}
+
+
+//suspend fun main() = coroutineScope {
+//
+//    val flow = flow {
+//        repeat(3) {
+//            println("stated cooking pancake $it")
+//            delay(100)
+//            println("pancake is ready $it")
+//            emit(it)
+//        }
+//    }.buffer()
+//
+//    flow.collect {
+//        println("collect: Start eating pancake $it")
+//        delay(1000)
+//        println("collect: finished eating pancake $it")
+//    }
+//}
 
 
 fun findFirstDoubleLetter(str: String): Char? {

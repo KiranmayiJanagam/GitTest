@@ -18,22 +18,37 @@ import javax.inject.Singleton
 object Modules {
     @Provides
     @Singleton
-    fun getRetrofitServiceInstance (retrofit: Retrofit): WebServices{
+    fun getRetrofitServiceInstance(retrofit: Retrofit): WebServices {
         return retrofit.create(WebServices::class.java)
     }
 
-    private val interceptor: HttpLoggingInterceptor = HttpLoggingInterceptor().apply {
-        level = HttpLoggingInterceptor.Level.BODY
+    @Provides
+    @Singleton
+    fun httpLoggingInterceptor(): HttpLoggingInterceptor {
+        return HttpLoggingInterceptor().apply {
+            level = HttpLoggingInterceptor.Level.BODY
+        }
     }
-    private val clint: OkHttpClient = OkHttpClient.Builder().addInterceptor(interceptor).build()
 
     @Provides
     @Singleton
-    fun getRetrofitInstance(): Retrofit{
+    fun provideOkHttpClient(interceptor: HttpLoggingInterceptor): OkHttpClient {
+        return OkHttpClient.Builder().addInterceptor(interceptor)
+            .build()
+    }
+//
+//    private val interceptor: HttpLoggingInterceptor = HttpLoggingInterceptor().apply {
+//        level = HttpLoggingInterceptor.Level.BODY
+//    }
+//    private val clint: OkHttpClient = OkHttpClient.Builder().addInterceptor(interceptor).build()
+
+    @Provides
+    @Singleton
+    fun getRetrofitInstance(okHttpClient: OkHttpClient): Retrofit {
         return Retrofit.Builder()
             .baseUrl(BASE_URL)
             .addConverterFactory(GsonConverterFactory.create())
-            .client(clint)
+            .client(okHttpClient)
             .build()
     }
 }

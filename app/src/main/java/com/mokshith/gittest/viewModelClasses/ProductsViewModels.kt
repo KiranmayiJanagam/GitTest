@@ -4,11 +4,12 @@ import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.mokshith.gittest.di.ProductsRepo
+import com.mokshith.gittest.modelClasses.Categories
 import com.mokshith.gittest.modelClasses.Category
 import com.mokshith.gittest.modelClasses.Product
-import com.mokshith.gittest.modelClasses.ProductsModel
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
@@ -20,7 +21,11 @@ class ProductsViewModels @Inject constructor(
     private val productsRepo: ProductsRepo
 ) : ViewModel() {
 
-    //private val _state1 = MutableStateFlow<ProductsModel>
+    private val _loading = MutableStateFlow(false)
+    private val _state1 = MutableStateFlow(Categories(null))
+
+    val state1: StateFlow<Categories>
+        get() = _state1
 
     private val _stateCa = MutableStateFlow(emptyList<Category>())
 
@@ -34,7 +39,33 @@ class ProductsViewModels @Inject constructor(
 
     init {
        //getProducts()
-        getCategories()
+        //getCategories()
+
+        getCategoriesL()
+    }
+
+    private fun getCategoriesL() {
+
+
+        viewModelScope.launch((Dispatchers.IO)) {
+            //delay(10000)
+            productsRepo.getCategoriesList1().let { response ->
+                try {
+                    withContext(Dispatchers.Main) {
+                        if (response.isSuccessful) {
+                            _state1.value = response.body()!!
+
+                            Log.e("TAG", ": ${response.body()}")
+                        } else {
+
+                            Log.e("TAG", "------->>  $  <---")
+                        }
+                    }
+                } catch (e: Exception) {
+                    Log.e("TAG", "------->>  $e")
+                }
+            }
+        }
     }
 
     private fun getCategories() {

@@ -5,11 +5,15 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.progressSemantics
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.ClickableText
 import androidx.compose.foundation.text.KeyboardActions
@@ -21,6 +25,7 @@ import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Checkbox
 import androidx.compose.material3.CheckboxDefaults
+import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.Divider
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
@@ -38,6 +43,7 @@ import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.platform.LocalFocusManager
+import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.text.SpanStyle
 import androidx.compose.ui.text.TextStyle
@@ -229,8 +235,8 @@ fun ClickableTextComponent(navController: NavController, onItemClick: (String) -
             Log.e("TAG", "ClickableTextComponent: $span")
             if (span.item == termsToUseText) {
                 //two ways to send the data from one Composable to another Composable
-                navController.navigate(Screen.TermsOfUse.withArgs("Terms and Conditions", " Body"))
-                //navController.navigate(Screen.TermsOfUse.route + "/ Terms and Conditions/ Body")
+                //navController.navigate(Screen.TermsOfUse.withArgs("Terms and Conditions", " Body"))
+                navController.navigate(Screen.TermsOfUse.route + "/ Terms and Conditions/ Body")
             } else if (span.item == privacyPolicyText) {
                 //this below onItemClick will handover the action to the parent composable
                 onItemClick("privacyPolicyText")
@@ -358,4 +364,41 @@ fun UnderLineTextComponents(value: String, onClick: () -> Unit) {
         textAlign = TextAlign.Center,
         textDecoration = TextDecoration.Underline,
     )
+}
+
+/**
+ * Screen displaying error message
+ */
+@Composable
+fun ErrorScreen(error: String?, modifier: Modifier = Modifier) {
+    Column(
+        modifier = modifier,
+        verticalArrangement = Arrangement.Center,
+        horizontalAlignment = Alignment.CenterHorizontally
+    ) {
+        if (error != null) {
+            Text(text = error, modifier = Modifier.padding(16.dp))
+        }
+    }
+}
+
+/**
+ * Display the loading message
+ */
+@Composable
+fun LoadingScreen() {
+    Box(
+        contentAlignment = Alignment.Center,
+        modifier = Modifier
+            .fillMaxSize()
+    ) {
+        CircularProgressIndicator(
+            modifier = Modifier.then(
+                Modifier
+                    .progressSemantics()
+                    .size(32.dp)
+                    .testTag("Progress Indicator")
+            )
+        )
+    }
 }

@@ -120,8 +120,9 @@ dependencies {
     implementation("androidx.hilt:hilt-navigation-compose:1.1.0-alpha01")
     implementation("androidx.hilt:hilt-navigation-fragment:1.0.0")
 
-    //to load images in imageview
-    implementation("com.github.bumptech.glide:glide:4.16.0")
+    //to load images
+    implementation("io.coil-kt:coil-compose:2.6.0")
+
 }
 
 // Allow references to generated code

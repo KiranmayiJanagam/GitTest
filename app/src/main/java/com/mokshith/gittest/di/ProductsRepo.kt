@@ -21,7 +21,7 @@ class ProductsRepo @Inject constructor(
 
     suspend fun getCategoriesList1() = webServices.getCategories1()
 
-
+    suspend fun getNycSchools() = webServices.getNycSchools()
 
     suspend fun getProductsList1() = webServices.getProducts1()
 }

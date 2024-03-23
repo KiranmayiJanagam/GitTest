@@ -10,8 +10,10 @@ import com.mokshith.gittest.modelClasses.Product
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
+import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import javax.inject.Inject
@@ -21,7 +23,10 @@ class ProductsViewModels @Inject constructor(
     private val productsRepo: ProductsRepo
 ) : ViewModel() {
 
-    private val _loading = MutableStateFlow(false)
+    private val _loading = MutableStateFlow(true)
+    val loading: StateFlow<Boolean>
+        get() = _loading
+
     private val _state1 = MutableStateFlow(Categories(null))
 
     val state1: StateFlow<Categories>
@@ -38,26 +43,19 @@ class ProductsViewModels @Inject constructor(
         get() = _state
 
     init {
-       //getProducts()
-        //getCategories()
-
         getCategoriesL()
     }
 
     private fun getCategoriesL() {
 
-
-        viewModelScope.launch((Dispatchers.IO)) {
-            //delay(10000)
+        viewModelScope.launch(Dispatchers.IO) {
             productsRepo.getCategoriesList1().let { response ->
                 try {
                     withContext(Dispatchers.Main) {
+                        _loading.value = false
                         if (response.isSuccessful) {
                             _state1.value = response.body()!!
-
-                            Log.e("TAG", ": ${response.body()}")
                         } else {
-
                             Log.e("TAG", "------->>  $  <---")
                         }
                     }
@@ -76,7 +74,6 @@ class ProductsViewModels @Inject constructor(
                     withContext(Dispatchers.Main) {
                         if (response.isSuccessful) {
                              _stateCa.value = response.body()!!
-                            Log.e("TAG", ": ${response.body()}")
                         } else {
                             Log.e("TAG", "------->>  $  <---")
                             _stateCa.value = emptyList()
@@ -97,7 +94,6 @@ class ProductsViewModels @Inject constructor(
                     withContext(Dispatchers.Main) {
                         if (response.isSuccessful) {
                             // _state.value = response.body()!!
-                            Log.e("TAG", ": ${response.body()}")
                         } else {
                             _state.value = emptyList()
                         }

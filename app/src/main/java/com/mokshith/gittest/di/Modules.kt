@@ -1,6 +1,8 @@
 package com.mokshith.gittest.di
 
-import com.mokshith.gittest.retrofit.BASE_URL
+import com.mokshith.gittest.common.ViewUtils.Companion.BASE_URL
+import com.mokshith.gittest.common.ViewUtils.Companion.BASE_URL2
+import com.mokshith.gittest.common.ViewUtils.Companion.baseOne
 import com.mokshith.gittest.retrofit.WebServices
 import dagger.Module
 import dagger.Provides
@@ -10,7 +12,7 @@ import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
-import retrofit2.create
+import javax.inject.Named
 import javax.inject.Singleton
 
 @Module
@@ -36,19 +38,37 @@ object Modules {
         return OkHttpClient.Builder().addInterceptor(interceptor)
             .build()
     }
-//
-//    private val interceptor: HttpLoggingInterceptor = HttpLoggingInterceptor().apply {
-//        level = HttpLoggingInterceptor.Level.BODY
-//    }
-//    private val clint: OkHttpClient = OkHttpClient.Builder().addInterceptor(interceptor).build()
 
     @Provides
     @Singleton
     fun getRetrofitInstance(okHttpClient: OkHttpClient): Retrofit {
         return Retrofit.Builder()
-            .baseUrl(BASE_URL)
+            .baseUrl(
+                BASE_URL
+            )
             .addConverterFactory(GsonConverterFactory.create())
             .client(okHttpClient)
             .build()
     }
+
+  /*  @Provides
+    @Singleton
+    @Named("retrofit2")
+    fun getRetrofitInstance2(okHttpClient: OkHttpClient): Retrofit {
+        return Retrofit.Builder()
+            .baseUrl(
+                BASE_URL
+            )
+            .addConverterFactory(GsonConverterFactory.create())
+            .client(okHttpClient)
+            .build()
+    }
+
+    @Provides
+    @Singleton
+    fun getRetrofitServiceInstance2(@Named("retrofit2") retrofit: Retrofit): WebServices {
+        return retrofit.create(WebServices::class.java)
+    }
+*/
+
 }

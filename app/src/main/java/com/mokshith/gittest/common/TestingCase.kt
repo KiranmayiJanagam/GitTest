@@ -37,7 +37,6 @@ fun LRUCache(strArr: Array<String>): String {
     return cache.keys.joinToString("-")
 }
 
-
 fun main() {
     println(LRUCache(arrayOf("A", "B", "C", "D", "A", "E", "D", "Z"))) // Output: C-A-E-D-Z
     println(LRUCache(arrayOf("A", "B", "A", "C", "A", "B"))) // Output: C-A-B
